@@ -63,14 +63,16 @@ Use only these skills:
 - `.agents/skills/supabase`
 - `.agents/skills/oxylabs-web-scraper`
 - `.agents/skills/ai-sdk`
+- `.agents/skills/playwright-cli`
 
 Use them for:
 
 - `node_modules/next/dist/docs/`: Next.js, routing, server/client boundaries, API routes, UI patterns
 - `clerk`: authentication and protected routes
 - `supabase`: schema, migrations, queries, service role usage, dedupe, logs, pgvector
-- `oxylabs-web-scraper`: Oxylabs Web Scraper API, Scheduler, scheduled jobs, scraping behavior
+- `web-scraper-api`: Oxylabs Web Scraper API, Scheduler, scheduled jobs, scraping behavior
 - `ai-sdk`: Vercel AI SDK and OpenAI provider usage, model calls, AI analysis output handling
+- `playwright-cli`: playwright testing and web browser automation
 
 Do not invent new skills.
 
