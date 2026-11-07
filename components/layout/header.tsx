@@ -22,7 +22,7 @@ export function Header() {
                 <a
                   key={link}
                   href="#"
-                  className="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
+                  className="rounded-sm text-sm font-medium text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-primary"
                 >
                   {link}
                 </a>
@@ -34,7 +34,7 @@ export function Header() {
             <button
               type="button"
               aria-label="Search"
-              className="hidden h-9 w-9 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface hover:text-text-primary md:inline-flex"
+              className="hidden h-9 w-9 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-primary md:inline-flex"
             >
               <Search size={18} strokeWidth={2} />
             </button>
@@ -47,7 +47,7 @@ export function Header() {
             <button
               type="button"
               aria-label="Menu"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-secondary md:hidden"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-primary md:hidden"
             >
               <Menu size={20} strokeWidth={2} />
             </button>

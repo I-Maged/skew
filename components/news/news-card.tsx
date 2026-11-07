@@ -47,7 +47,7 @@ export function NewsCard({
         <button
           type="button"
           aria-label="Source info"
-          className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-bg-primary/90 text-text-secondary shadow-sm"
+          className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-bg-primary/90 text-text-secondary shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-primary"
         >
           <Info size={14} strokeWidth={2} />
         </button>

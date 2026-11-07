@@ -10,7 +10,16 @@ const viewports: Record<string, Viewport> = {
 
 async function waitForDesignSystem(page: Page) {
   await page.waitForLoadState("domcontentloaded");
-  await page.evaluate(() => document.fonts.ready);
+  // Firefox can stall indefinitely on document.fonts.ready when the system
+  // font set does not resolve; bound that wait so tests fail fast on real
+  // regressions instead of hanging for 30s.
+  await page.evaluate(
+    () =>
+      Promise.race([
+        document.fonts.ready,
+        new Promise<void>((resolve) => setTimeout(resolve, 5000)),
+      ]),
+  );
   await page.waitForTimeout(300);
 }
 

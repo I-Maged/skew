@@ -37,7 +37,7 @@ export function Footer() {
               <ul className="mt-3 space-y-2 text-sm">
                 {column.links.map((link) => (
                   <li key={link}>
-                    <a href="#" className="transition-colors hover:text-white">
+                    <a href="#" className="rounded-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                       {link}
                     </a>
                   </li>

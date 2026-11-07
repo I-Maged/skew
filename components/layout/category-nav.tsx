@@ -23,7 +23,7 @@ export function CategoryNav() {
             <a
               key={category}
               href="#"
-              className="whitespace-nowrap transition-colors hover:text-text-primary"
+              className="whitespace-nowrap rounded-sm transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text-primary"
             >
               {category}
             </a>
