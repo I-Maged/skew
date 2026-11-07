@@ -4,6 +4,9 @@ on:
     branches: [ main, master, "feature/*" ]
   pull_request:
     branches: [ main, master ]
+
+permissions:
+  contents: write
 jobs:
   test:
     timeout-minutes: 60
@@ -24,7 +27,18 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --update-snapshots
+    - name: Commit updated snapshots
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add "tests/*-snapshots"
+        if git diff --cached --quiet; then
+          echo "No snapshot changes to commit."
+          exit 0
+        fi
+        git commit -m "chore: update Playwright snapshots on Linux"
+        git push
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
