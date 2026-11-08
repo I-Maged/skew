@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Menu } from "lucide-react";
+import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 
 const navItems = ["Home", "For You", "Local", "Blindspot"];
 
@@ -53,12 +55,21 @@ export function HomeHeader() {
           >
             Subscribe
           </button>
-          <button
-            type="button"
-            className="hidden h-9 w-[102px] items-center justify-center rounded-[5px] border border-[#bfc0bd] bg-white text-[13px] font-semibold text-[#111111] hover:opacity-82 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#111111] sm:inline-flex"
-          >
-            Login
-          </button>
+          <Suspense fallback={null}>
+            <Show when="signed-out">
+              <SignInButton mode="modal">
+                <button
+                  type="button"
+                  className="hidden h-9 w-[102px] items-center justify-center rounded-[5px] border border-[#bfc0bd] bg-white text-[13px] font-semibold text-[#111111] hover:opacity-82 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#111111] sm:inline-flex"
+                >
+                  Login
+                </button>
+              </SignInButton>
+            </Show>
+            <Show when="signed-in">
+              <UserButton />
+            </Show>
+          </Suspense>
         </div>
       </div>
     </header>
