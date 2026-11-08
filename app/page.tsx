@@ -16,7 +16,8 @@ const stories: HomeStory[] = [
   {
     category: "Health",
     location: "United States",
-    title: "Researchers Make Case for Grapes as a ‘Superfood’ After Review of Health Evidence",
+    title:
+      "Researchers Make Case for Grapes as a ‘Superfood’ After Review of Health Evidence",
     image: "/images/story-2.svg",
     sources: 7,
     perspective: { left: 18, center: 42, right: 40 },
@@ -32,7 +33,8 @@ const stories: HomeStory[] = [
   {
     category: "World",
     location: "Nicaragua",
-    title: "Indigenous Leader Brooklyn Rivera Dies in Nicaragua After Nearly 3 Years of Detention",
+    title:
+      "Indigenous Leader Brooklyn Rivera Dies in Nicaragua After Nearly 3 Years of Detention",
     image: "/images/story-4.svg",
     sources: 63,
     perspective: { left: 54, center: 28, right: 18 },
@@ -40,7 +42,8 @@ const stories: HomeStory[] = [
   {
     category: "World",
     location: "Middle East",
-    title: "UN Security Council to Hold Emergency Meeting as Israel Pushes Deeper into Lebanon",
+    title:
+      "UN Security Council to Hold Emergency Meeting as Israel Pushes Deeper into Lebanon",
     image: "/images/story-5.svg",
     sources: 15,
     perspective: { left: 22, center: 35, right: 43 },
@@ -72,7 +75,8 @@ const stories: HomeStory[] = [
   {
     category: "Climate",
     location: "Global",
-    title: "2025 on Track to Be Among Top 3 Hottest Years, EU Climate Service Says",
+    title:
+      "2025 on Track to Be Among Top 3 Hottest Years, EU Climate Service Says",
     image: "/images/story-9.svg",
     sources: 14,
     perspective: { left: 33, center: 34, right: 33 },
@@ -80,7 +84,8 @@ const stories: HomeStory[] = [
   {
     category: "Economy",
     location: "United States",
-    title: "Fed Holds Rates Steady, Signals Caution on Inflation and Growth Outlook",
+    title:
+      "Fed Holds Rates Steady, Signals Caution on Inflation and Growth Outlook",
     image: "/images/story-10.svg",
     sources: 13,
     perspective: { left: 30, center: 45, right: 26 },
@@ -111,7 +116,7 @@ export default function HomePage() {
       <TopicBar />
 
       <main>
-        <div className="mx-auto max-w-[936px] px-4 py-[26px] pb-[18px] md:px-[44px]">
+        <div className="mx-auto max-w-234 px-4 py-6.5 pb-4.5 md:px-11">
           <h1 className="mb-4 text-[24px] font-bold text-[#111111]">
             Top News
           </h1>
