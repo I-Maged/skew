@@ -79,6 +79,13 @@ Add Clerk authentication to the existing Next.js 16 `biasly` application. Keep t
 - `npm run lint`
 - `npm run build`
 
+## CI and tests
+
+- Use `@clerk/testing` Playwright helpers.
+- Store Clerk and E2E credentials as GitHub Secrets.
+- Protect news page via resource-based `auth.protect()` inside the page.
+- Homepage remains public.
+
 ## Exact manual test steps expected after implementation
 
 1. Run `npm run dev`.
