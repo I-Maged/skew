@@ -30,7 +30,7 @@ test.describe("Design system smoke", () => {
       if (message.type() === "error") consoleErrors.push(message.text());
     });
 
-    await page.goto("/");
+    await page.goto("/design-showcase");
     await waitForDesignSystem(page);
 
     await expect(page.getByTestId("utility-bar")).toBeVisible();
@@ -44,7 +44,7 @@ test.describe("Design system smoke", () => {
   });
 
   test("renders bias meter and token reference", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/design-showcase");
     await waitForDesignSystem(page);
 
     await expect(page.getByTestId("bias-meter").first()).toBeVisible();
@@ -55,7 +55,7 @@ test.describe("Design system smoke", () => {
 
 test.describe("Theme toggle", () => {
   test("persists selected theme after reload", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/design-showcase");
     await waitForDesignSystem(page);
 
     await page.getByRole("button", { name: "Dark" }).click();
@@ -80,7 +80,7 @@ test.describe("Theme toggle", () => {
     });
     await page.emulateMedia({ colorScheme: "dark" });
 
-    await page.goto("/");
+    await page.goto("/design-showcase");
     await waitForDesignSystem(page);
 
     await expect(page.locator("html")).toHaveClass(/dark/);
@@ -92,7 +92,7 @@ for (const [name, viewport] of Object.entries(viewports)) {
     test.use({ viewport });
 
     test(`news grid uses expected columns`, async ({ page }) => {
-      await page.goto("/");
+      await page.goto("/design-showcase");
       await waitForDesignSystem(page);
 
       const expectedColumns =
@@ -110,7 +110,7 @@ for (const [name, viewport] of Object.entries(viewports)) {
     });
 
     test(`core sections render`, async ({ page }) => {
-      await page.goto("/");
+      await page.goto("/design-showcase");
       await waitForDesignSystem(page);
 
       await expect(page.getByTestId("header")).toBeVisible();
@@ -142,7 +142,7 @@ test.describe("Visual snapshots", () => {
         });
       }
 
-      await page.goto("/");
+      await page.goto("/design-showcase");
       await waitForDesignSystem(page);
 
       const snapshotName = `design-system-${testCase.name}-${testCase.dark ? "dark" : "light"}.png`;
