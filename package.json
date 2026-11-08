@@ -11,12 +11,14 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.9.25",
     "lucide-react": "^1.70.0",
     "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@clerk/testing": "^2.2.55",
     "@playwright/cli": "^0.1.23",
     "@playwright/test": "^1.65.0",
     "@tailwindcss/turbopack": "^4",

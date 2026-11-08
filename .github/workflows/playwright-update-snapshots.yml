@@ -15,6 +15,22 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm ci
+      - name: Create environment file
+        env:
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+        run: |
+          : "${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:?Repository secret NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is required}"
+          : "${CLERK_SECRET_KEY:?Repository secret CLERK_SECRET_KEY is required}"
+          cat > .env.local <<EOF
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+          CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+          CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+          NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+          NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+          NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+          NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+          EOF
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
       - name: Update snapshots
@@ -23,7 +39,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "tests/*-snapshots"
+          git add -A -- tests/
           if git diff --cached --quiet; then
             echo "No snapshot changes to commit."
             exit 0

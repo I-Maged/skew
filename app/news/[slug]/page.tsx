@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import { auth } from "@clerk/nextjs/server";
 import { HomeUtilityBar } from "@/components/home/home-utility-bar";
 import { HomeHeader } from "@/components/home/home-header";
 import { HomeFooter } from "@/components/home/home-footer";
@@ -66,6 +68,15 @@ const relatedStories: RelatedStory[] = [
 ];
 
 export default function NewsDetailsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ProtectedNewsDetails />
+    </Suspense>
+  );
+}
+
+async function ProtectedNewsDetails() {
+  await auth.protect();
   return (
     <div className="min-h-screen bg-[#f2f3f0]">
       <HomeUtilityBar />

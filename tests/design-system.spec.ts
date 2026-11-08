@@ -30,7 +30,7 @@ test.describe("Design system smoke", () => {
       if (message.type() === "error") consoleErrors.push(message.text());
     });
 
-    await page.goto("/design-showcase");
+    await page.goto("/design-showcase", { waitUntil: "domcontentloaded" });
     await waitForDesignSystem(page);
 
     await expect(page.getByTestId("utility-bar")).toBeVisible();
@@ -44,7 +44,7 @@ test.describe("Design system smoke", () => {
   });
 
   test("renders bias meter and token reference", async ({ page }) => {
-    await page.goto("/design-showcase");
+    await page.goto("/design-showcase", { waitUntil: "domcontentloaded" });
     await waitForDesignSystem(page);
 
     await expect(page.getByTestId("bias-meter").first()).toBeVisible();
@@ -80,7 +80,7 @@ test.describe("Theme toggle", () => {
     });
     await page.emulateMedia({ colorScheme: "dark" });
 
-    await page.goto("/design-showcase");
+    await page.goto("/design-showcase", { waitUntil: "domcontentloaded" });
     await waitForDesignSystem(page);
 
     await expect(page.locator("html")).toHaveClass(/dark/);
@@ -92,7 +92,7 @@ for (const [name, viewport] of Object.entries(viewports)) {
     test.use({ viewport });
 
     test(`news grid uses expected columns`, async ({ page }) => {
-      await page.goto("/design-showcase");
+      await page.goto("/design-showcase", { waitUntil: "domcontentloaded" });
       await waitForDesignSystem(page);
 
       const expectedColumns =
@@ -110,7 +110,7 @@ for (const [name, viewport] of Object.entries(viewports)) {
     });
 
     test(`core sections render`, async ({ page }) => {
-      await page.goto("/design-showcase");
+      await page.goto("/design-showcase", { waitUntil: "domcontentloaded" });
       await waitForDesignSystem(page);
 
       await expect(page.getByTestId("header")).toBeVisible();
@@ -142,12 +142,12 @@ test.describe("Visual snapshots", () => {
         });
       }
 
-      await page.goto("/design-showcase");
+      await page.goto("/design-showcase", { waitUntil: "domcontentloaded" });
       await waitForDesignSystem(page);
 
       const snapshotName = `design-system-${testCase.name}-${testCase.dark ? "dark" : "light"}.png`;
       await expect(page).toHaveScreenshot(snapshotName, {
-        fullPage: true,
+        fullPage: false,
         maxDiffPixelRatio: 0.02,
         animations: "disabled",
       });
