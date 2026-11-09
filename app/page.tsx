@@ -17,14 +17,14 @@ export default async function HomePage() {
   }));
 
   return (
-    <div className="min-h-screen bg-[#f1f2ef]">
+    <div className="min-h-screen bg-[#f1f2ef] dark:bg-[#0a0a0f]">
       <HomeUtilityBar />
       <HomeHeader />
       <TopicBar />
 
       <main>
         <div className="mx-auto max-w-234 px-4 py-6.5 pb-4.5 md:px-11">
-          <h1 className="mb-4 text-[24px] font-bold text-[#111111]">
+          <h1 className="mb-4 text-[24px] font-bold text-[#111111] dark:text-[#f5f5f5]">
             Top News
           </h1>
 
