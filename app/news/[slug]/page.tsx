@@ -93,7 +93,7 @@ async function ProtectedNewsDetails({
   }
 
   return (
-    <div className="min-h-screen bg-[#f2f3f0]">
+    <div className="min-h-screen bg-[#f2f3f0] dark:bg-[#0a0a0f]">
       <HomeUtilityBar />
       <HomeHeader />
 
@@ -117,7 +117,7 @@ async function ProtectedNewsDetails({
               <ArticleBody paragraphs={detail.paragraphs} />
 
               <div className="mt-6 border-t border-[#d2d3cf] pt-4">
-                <h2 className="mb-3 text-[16px] font-bold text-[#111111]">
+                <h2 className="mb-3 text-[16px] font-bold text-[#111111] dark:text-[#f5f5f5]">
                   Related Stories
                 </h2>
                 <div

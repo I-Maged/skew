@@ -43,3 +43,23 @@ test.describe("Homepage", () => {
     });
   }
 });
+
+test.describe("Theme toggle", () => {
+  test("switches homepage between light and dark", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.addInitScript(() => localStorage.removeItem("biasly-theme"));
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    await page.getByRole("button", { name: "Dark" }).click();
+    await expect.poll(() =>
+      page.evaluate(() => document.documentElement.classList.contains("dark")),
+    ).toBe(true);
+    expect(await page.evaluate(() => localStorage.getItem("biasly-theme"))).toBe("dark");
+
+    await page.getByRole("button", { name: "Light" }).click();
+    await expect.poll(() =>
+      page.evaluate(() => document.documentElement.classList.contains("dark")),
+    ).toBe(false);
+    expect(await page.evaluate(() => localStorage.getItem("biasly-theme"))).toBe("light");
+  });
+});

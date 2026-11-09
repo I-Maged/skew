@@ -13,17 +13,17 @@ export function ArticleHeader({
 }) {
   return (
     <section data-testid="article-header">
-      <div className="text-[10px] text-[#444444]">
-        <span className="font-semibold text-[#111111]">{category}</span>
+      <div className="text-[10px] text-[#444444] dark:text-[#a0aec0]">
+        <span className="font-semibold text-[#111111] dark:text-[#f5f5f5]">{category}</span>
         <span> · {location}</span>
       </div>
 
-      <h1 className="mt-2 mb-[10px] text-[clamp(28px,3vw,39px)] font-[750] leading-[1.08] tracking-[-0.035em] text-[#111111]">
+      <h1 className="mt-2 mb-[10px] text-[clamp(28px,3vw,39px)] font-[750] leading-[1.08] tracking-[-0.035em] text-[#111111] dark:text-[#f5f5f5]">
         {title}
       </h1>
 
-      <div className="flex flex-wrap items-center justify-between gap-[10px] border-t border-[#d2d3cf] pt-2">
-        <div className="flex items-center gap-2 text-[10px] text-[#737373]">
+      <div className="flex flex-wrap items-center justify-between gap-[10px] border-t border-[#d2d3cf] dark:border-[#3a3a45] pt-2">
+        <div className="flex items-center gap-2 text-[10px] text-[#737373] dark:text-[#9ca3af]">
           <span>By Editorial Desk</span>
           <span>|</span>
           <span>{publishedAt}</span>
@@ -31,7 +31,7 @@ export function ArticleHeader({
           <span>8 min read</span>
         </div>
 
-        <div className="flex items-center gap-2 text-[10px] text-[#4d4d4d]">
+        <div className="flex items-center gap-2 text-[10px] text-[#4d4d4d] dark:text-[#a0aec0]">
           <button type="button" className="hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123f91]">
             Save
           </button>
