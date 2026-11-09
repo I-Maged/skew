@@ -1,23 +1,30 @@
 import { Info } from "lucide-react";
 
-const breakdown = [
-  { label: "Left", count: 2, percent: 20, color: "bg-[#9f1720]", barWidth: "20%" },
-  { label: "Center", count: 4, percent: 31, color: "bg-[#d6d6d2]", barWidth: "31%" },
-  { label: "Right", count: 6, percent: 49, color: "bg-[#123f91]", barWidth: "49%" },
-];
+export function SourceBreakdownCard({
+  sourcesCount,
+  left,
+  center,
+  right,
+}: {
+  sourcesCount: number;
+  left: number;
+  center: number;
+  right: number;
+}) {
+  const leftCount = Math.round((sourcesCount * left) / 100);
+  const centerCount = Math.round((sourcesCount * center) / 100);
+  const rightCount = Math.max(0, sourcesCount - leftCount - centerCount);
 
-const topSources = [
-  { name: "Fox News", bias: "Right", color: "text-[#9f1720]" },
-  { name: "The Wall Street Journal", bias: "Center", color: "text-[#737373]" },
-  { name: "Reuters", bias: "Center", color: "text-[#737373]" },
-  { name: "BBC", bias: "Center", color: "text-[#737373]" },
-  { name: "CNN", bias: "Left", color: "text-[#9f1720]" },
-  { name: "The New York Times", bias: "Center", color: "text-[#737373]" },
-  { name: "The Washington Post", bias: "Center", color: "text-[#737373]" },
-  { name: "Newsmax", bias: "Right", color: "text-[#9f1720]" },
-];
+  const breakdown = [
+    { label: "Left", count: leftCount, percent: left, color: "bg-[#9f1720]", barWidth: `${left}%` },
+    { label: "Center", count: centerCount, percent: center, color: "bg-[#d6d6d2]", barWidth: `${center}%` },
+    { label: "Right", count: rightCount, percent: right, color: "bg-[#123f91]", barWidth: `${right}%` },
+  ];
 
-export function SourceBreakdownCard() {
+  const topSources = [
+    { name: "Stored source", bias: center >= 40 ? "Center" : right > left ? "Right" : "Left", color: "text-[#737373]" },
+  ];
+
   return (
     <section
       data-testid="source-breakdown-card"
@@ -32,7 +39,7 @@ export function SourceBreakdownCard() {
         </button>
       </div>
 
-      <div className="mt-1 text-[12px] font-bold text-[#111111]">12 Total Sources</div>
+      <div className="mt-1 text-[12px] font-bold text-[#111111]">{sourcesCount} Total Sources</div>
 
       <div className="mt-2">
         {breakdown.map((row) => (
@@ -68,13 +75,6 @@ export function SourceBreakdownCard() {
           ))}
         </div>
       </div>
-
-      <button
-        type="button"
-        className="mt-3 flex h-[30px] w-full items-center justify-center rounded-[4px] border border-[#b9bab7] bg-white text-[10px] text-[#111111] hover:opacity-82"
-      >
-        View All Sources
-      </button>
     </section>
   );
 }

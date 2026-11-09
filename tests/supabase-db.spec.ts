@@ -14,8 +14,18 @@ test.describe("Supabase read routes", () => {
     const response = await request.get("/api/articles");
     expect(response.ok()).toBeTruthy();
 
-    const articles = (await response.json()) as Array<{ title: string }>;
+    const articles = (await response.json()) as Array<{ title: string; slug: string }>;
     expect(Array.isArray(articles)).toBe(true);
     expect(articles.length).toBe(12);
+  });
+
+  test("article route returns the seeded story by slug", async ({ request }) => {
+    const response = await request.get("/api/articles/trump-iran-proposal");
+    expect(response.ok()).toBeTruthy();
+
+    const article = (await response.json()) as { title: string; slug: string; paragraphs: string[] };
+    expect(article.slug).toBe("trump-iran-proposal");
+    expect(article.title).toBe("Trump Sends Iran Revised Peace Proposal With Tougher Terms: Report");
+    expect(article.paragraphs.length).toBeGreaterThan(1);
   });
 });

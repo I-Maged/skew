@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Info } from "lucide-react";
 
 export interface HomeStory {
@@ -9,10 +10,8 @@ export interface HomeStory {
   perspective: { left: number; center: number; right: number };
 }
 
-export function HomeNewsCard({ story }: { story: HomeStory }) {
-  const { category, location, title, image, sources, perspective } = story;
-
-  return (
+export function HomeNewsCard({ story, href }: { story: HomeStory; href?: string }) {
+  const card = (
     <article
       data-testid="news-card"
       className="overflow-hidden rounded-[5px] border border-[#bfc0bd] bg-[#f8f8f5] transition-all hover:-translate-y-[1px] hover:border-[#777]"
@@ -20,8 +19,8 @@ export function HomeNewsCard({ story }: { story: HomeStory }) {
       <div className="relative aspect-[16/9] w-full bg-[#e4e5e2]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={image}
-          alt={title}
+          src={story.image}
+          alt={story.title}
           className="h-full w-full object-cover"
         />
         <button
@@ -35,30 +34,40 @@ export function HomeNewsCard({ story }: { story: HomeStory }) {
 
       <div className="px-[11px] pb-[10px] pt-[10px]">
         <div className="text-[10px] text-[#444444]">
-          <span className="font-semibold text-[#111111]">{category}</span>
-          <span> · {location}</span>
+          <span className="font-semibold text-[#111111]">{story.category}</span>
+          <span> · {story.location}</span>
         </div>
 
         <h3 className="mt-1 min-h-[2.6em] text-[15px] font-bold leading-[1.2] text-[#111111]">
-          {title}
+          {story.title}
         </h3>
 
         <div className="mt-[13px] grid h-[14px] grid-cols-3 overflow-hidden text-[9px] leading-[14px]">
           <span className="bg-[#a81721] text-center text-white">
-            L {perspective.left}%
+            L {story.perspective.left}%
           </span>
           <span className="border-t border-b border-[#d6d6d2] bg-[#f5f5f2] text-center text-[#333]">
-            Center {perspective.center}%
+            Center {story.perspective.center}%
           </span>
           <span className="bg-[#123f91] text-center text-white">
-            Right {perspective.right}%
+            Right {story.perspective.right}%
           </span>
         </div>
 
         <div className="mt-[12px] mb-[2px] text-[10px] font-medium text-[#111111]">
-          {sources} sources
+          {story.sources} sources
         </div>
       </div>
     </article>
+  );
+
+  if (!href) {
+    return card;
+  }
+
+  return (
+    <Link href={href} className="block rounded-[5px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123f91]">
+      {card}
+    </Link>
   );
 }

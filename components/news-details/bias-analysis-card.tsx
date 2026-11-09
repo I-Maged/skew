@@ -1,10 +1,32 @@
 import { Info } from "lucide-react";
 
-export function BiasAnalysisCard() {
+export function BiasAnalysisCard({
+  left,
+  center,
+  right,
+  sourcesCount,
+  biasLabel,
+  sentimentLabel,
+  confidence,
+  disclaimer,
+  loadedTerms,
+}: {
+  left: number;
+  center: number;
+  right: number;
+  sourcesCount: number;
+  biasLabel: string;
+  sentimentLabel: string;
+  confidence: number;
+  disclaimer: string;
+  loadedTerms: string[];
+}) {
+  const dominant = Math.max(left, center, right);
+  const dominantLabel = biasLabel.charAt(0).toUpperCase() + biasLabel.slice(1);
   const rows = [
-    { label: "Left", value: "20%", color: "bg-[#9f1720]", countWidth: "20%" },
-    { label: "Center", value: "31%", color: "bg-[#d6d6d2]", countWidth: "31%" },
-    { label: "Right", value: "49%", color: "bg-[#123f91]", countWidth: "49%" },
+    { label: "Left", value: `${left}%`, color: "bg-[#9f1720]", countWidth: `${left}%` },
+    { label: "Center", value: `${center}%`, color: "bg-[#d6d6d2]", countWidth: `${center}%` },
+    { label: "Right", value: `${right}%`, color: "bg-[#123f91]", countWidth: `${right}%` },
   ];
 
   return (
@@ -21,8 +43,12 @@ export function BiasAnalysisCard() {
 
       <div className="mt-2">
         <div className="text-[11px] text-[#4d4d4d]">Overall Bias</div>
-        <div className="text-[19px] font-bold text-[#123f91]">Right 49%</div>
-        <div className="text-[9px] text-[#737373]">Based on 12 balanced sources</div>
+        <div className="text-[19px] font-bold text-[#123f91]">
+          {dominantLabel} {dominant}%
+        </div>
+        <div className="text-[9px] text-[#737373]">
+          Based on {sourcesCount} stored sources
+        </div>
       </div>
 
       <div className="mt-2">
@@ -40,17 +66,19 @@ export function BiasAnalysisCard() {
         ))}
       </div>
 
-      <p className="mt-2 text-[9px] leading-snug text-[#4d4d4d]">
-        Our analysis is based on the political leaning of the publication and how
-        the story is framed. Sources are weighted by reliability and recency.
-      </p>
+      <div className="mt-2 text-[9px] text-[#737373]">
+        Sentiment: {sentimentLabel} · Confidence: {Math.round(confidence * 100)}%
+      </div>
 
-      <button
-        type="button"
-        className="mt-3 flex h-[30px] w-full items-center justify-center rounded-[4px] border border-[#b9bab7] bg-white text-[10px] text-[#111111] hover:opacity-82"
-      >
-        How We Analyze Bias
-      </button>
+      {loadedTerms.length > 0 ? (
+        <div className="mt-2 text-[9px] text-[#4d4d4d]">
+          Loaded terms: {loadedTerms.join(", ")}
+        </div>
+      ) : null}
+
+      <p className="mt-2 text-[9px] leading-snug text-[#4d4d4d]">
+        {disclaimer}
+      </p>
     </section>
   );
 }

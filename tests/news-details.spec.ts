@@ -93,4 +93,21 @@ test.describe("News details page", () => {
 
     expect(sidebarY).toBeGreaterThan(articleY);
   });
+
+  test("renders seeded full story and analysis", async ({ page }) => {
+    await page.goto(url, { waitUntil: "domcontentloaded" });
+
+    await expect(page.getByRole("heading", { name: "Trump Sends Iran Revised Peace Proposal With Tougher Terms: Report" })).toBeVisible();
+    await expect(page.getByTestId("article-body")).toContainText("revised nuclear deal proposal");
+    await expect(page.getByTestId("ai-summary-card")).toContainText("complete halt to uranium enrichment");
+    await expect(page.getByTestId("bias-analysis-card")).toContainText("Right 49%");
+    await expect(page.getByTestId("bias-analysis-card")).toContainText("Confidence: 70%");
+  });
+
+  test("clicking a homepage story opens a seeded article", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.getByTestId("news-card").first().click();
+    await page.waitForURL(/\/news\//);
+    await expect(page.getByRole("heading", { name: "Trump Sends Iran Revised Peace Proposal With Tougher Terms: Report" })).toBeVisible();
+  });
 });

@@ -20,6 +20,7 @@ create table if not exists public.articles (
   url text not null unique,
   canonical_url text,
   title text not null,
+  slug text,
   image_url text not null,
   published_at timestamptz not null,
   raw_text text,
@@ -81,6 +82,7 @@ create table if not exists public.oxylabs_schedule_runs (
 create index if not exists articles_source_id_idx on public.articles(source_id);
 create index if not exists articles_published_at_idx on public.articles(published_at desc);
 create index if not exists articles_url_idx on public.articles(url);
+create unique index if not exists articles_slug_key on public.articles(slug);
 create index if not exists article_analyses_article_id_idx on public.article_analyses(article_id);
 create index if not exists oxylabs_schedules_source_id_idx on public.oxylabs_schedules(source_id);
 create index if not exists oxylabs_schedule_runs_schedule_id_idx on public.oxylabs_schedule_runs(schedule_id);
@@ -109,3 +111,7 @@ create policy "public_read_article_analyses"
 
 grant usage on schema public to anon, authenticated;
 grant select on public.sources, public.articles, public.article_analyses to anon, authenticated;
+
+-- Migration safety for databases created before the slug column existed.
+alter table public.articles add column if not exists slug text;
+create unique index if not exists articles_slug_key on public.articles(slug);

@@ -1,9 +1,9 @@
+import { connection } from "next/server";
 import { HomeUtilityBar } from "@/components/home/home-utility-bar";
 import { HomeHeader } from "@/components/home/home-header";
 import { TopicBar } from "@/components/home/topic-bar";
-import { HomeNewsCard, type HomeStory } from "@/components/home/home-news-card";
+import { HomeNewsCard } from "@/components/home/home-news-card";
 import { HomeFooter } from "@/components/home/home-footer";
-import { connection } from "next/server";
 import { listHomepageArticles, toHomeStory } from "@/lib/supabase/queries/articles";
 
 export const instant = false;
@@ -11,7 +11,10 @@ export const instant = false;
 export default async function HomePage() {
   await connection();
   const articles = await listHomepageArticles({ limit: 24 });
-  const stories: HomeStory[] = articles.map(toHomeStory);
+  const items = articles.map((article) => ({
+    story: toHomeStory(article),
+    href: `/news/${article.slug}`,
+  }));
 
   return (
     <div className="min-h-screen bg-[#f1f2ef]">
@@ -29,8 +32,8 @@ export default async function HomePage() {
             data-testid="news-grid"
             className="grid grid-cols-1 gap-[20px_21px] md:grid-cols-2 lg:grid-cols-3"
           >
-            {stories.map((story) => (
-              <HomeNewsCard key={story.title} story={story} />
+            {items.map(({ story, href }) => (
+              <HomeNewsCard key={story.title} story={story} href={href} />
             ))}
           </div>
         </div>

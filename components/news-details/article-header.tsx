@@ -1,26 +1,34 @@
 import { Bookmark, MoreHorizontal, Share2 } from "lucide-react";
 
-export function ArticleHeader() {
+export function ArticleHeader({
+  title,
+  category,
+  location,
+  publishedAt,
+}: {
+  title: string;
+  category: string;
+  location: string;
+  publishedAt: string;
+}) {
   return (
     <section data-testid="article-header">
       <div className="text-[10px] text-[#444444]">
-        <span className="font-semibold text-[#111111]">Politics</span>
-        <span> · United States</span>
+        <span className="font-semibold text-[#111111]">{category}</span>
+        <span> · {location}</span>
       </div>
 
       <h1 className="mt-2 mb-[10px] text-[clamp(28px,3vw,39px)] font-[750] leading-[1.08] tracking-[-0.035em] text-[#111111]">
-        Trump Sends Iran Revised Peace
-        <br />
-        Proposal With Tougher Terms: Report
+        {title}
       </h1>
 
       <div className="flex flex-wrap items-center justify-between gap-[10px] border-t border-[#d2d3cf] pt-2">
         <div className="flex items-center gap-2 text-[10px] text-[#737373]">
-          <span>By David Morgan</span>
+          <span>By Editorial Desk</span>
           <span>|</span>
-          <span>May 31, 2026</span>
+          <span>{publishedAt}</span>
           <span>|</span>
-          <span>12 min read</span>
+          <span>8 min read</span>
         </div>
 
         <div className="flex items-center gap-2 text-[10px] text-[#4d4d4d]">
