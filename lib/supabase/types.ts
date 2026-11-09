@@ -35,6 +35,7 @@ export interface Database {
           url: string;
           canonical_url: string | null;
           title: string;
+          slug: string | null;
           image_url: string;
           published_at: string;
           raw_text: string | null;
@@ -51,6 +52,7 @@ export interface Database {
           url: string;
           canonical_url?: string | null;
           title: string;
+          slug?: string | null;
           image_url: string;
           published_at: string;
           raw_text?: string | null;

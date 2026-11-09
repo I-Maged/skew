@@ -1,4 +1,14 @@
-export function BiasDistribution() {
+export function BiasDistribution({
+  left,
+  center,
+  right,
+  sourcesCount,
+}: {
+  left: number;
+  center: number;
+  right: number;
+  sourcesCount: number;
+}) {
   return (
     <section
       data-testid="bias-distribution"
@@ -18,14 +28,14 @@ export function BiasDistribution() {
       </div>
 
       <div className="mt-3 grid h-[17px] grid-cols-[1fr_1.35fr_1.4fr] overflow-hidden text-center text-[9px] font-semibold leading-[17px]">
-        <span className="bg-[#9f1720] text-white">Left 20%</span>
+        <span className="bg-[#9f1720] text-white">Left {left}%</span>
         <span className="border-t border-b border-[#d2d2ce] bg-[#f6f6f3] text-[#111]">
-          Center 31%
+          Center {center}%
         </span>
-        <span className="bg-[#123f91] text-white">Right 49%</span>
+        <span className="bg-[#123f91] text-white">Right {right}%</span>
       </div>
 
-      <p className="mt-2 text-[10px] text-[#737373]">12 sources</p>
+      <p className="mt-2 text-[10px] text-[#737373]">{sourcesCount} sources</p>
     </section>
   );
 }
