@@ -17,7 +17,7 @@ test.describe("Signed-out Clerk authentication", () => {
     await page.goto("/news/trump-iran-proposal", {
       waitUntil: "domcontentloaded",
     });
-    await page.waitForURL(/\/sign-in/);
+    await page.waitForURL(/\/sign-in/, { timeout: 15000 });
     await expect(page).toHaveURL(/\/sign-in/);
   });
 

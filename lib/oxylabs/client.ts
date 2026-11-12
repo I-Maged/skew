@@ -54,10 +54,14 @@ export async function createSchedule(
   _items?: Record<string, unknown>[],
   _endTime?: string,
 ): Promise<CreateScheduleResult> {
+  void _cron;
+  void _items;
+  void _endTime;
   throw new Error("Scheduler is not available on the Oxylabs Web API product");
 }
 
 export async function listRemoteSchedules(_?: string): Promise<string[]> {
+  void _;
   return [];
 }
 
@@ -76,13 +80,16 @@ export interface RunInfo {
 }
 
 export async function getRuns(_scheduleId?: string): Promise<RunInfo[]> {
+  void _scheduleId;
   return [];
 }
 
 export async function deactivateSchedule(_scheduleId?: string): Promise<void> {
+  void _scheduleId;
   // no-op
 }
 
 export async function fetchJobResult(_jobId?: string): Promise<string> {
+  void _jobId;
   throw new Error("Scheduler is not available on the Oxylabs Web API product");
 }
