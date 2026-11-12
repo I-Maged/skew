@@ -8,8 +8,8 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: lts/*
       - name: Install dependencies
@@ -50,6 +50,15 @@ jobs:
         run: npx playwright install --with-deps
       - name: Update snapshots
         run: npx playwright test --update-snapshots
+      - name: Upload Playwright diagnostics
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-snapshot-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
       - name: Commit updated snapshots
         run: |
           git config user.name "github-actions[bot]"

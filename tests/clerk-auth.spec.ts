@@ -6,6 +6,8 @@ import {
 import { authenticatedStatePath } from "./auth-helpers";
 
 test.describe("Signed-out Clerk authentication", () => {
+  test.describe.configure({ mode: "serial" });
+
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test("homepage is public and shows Login when signed out", async ({ page }) => {
@@ -17,22 +19,25 @@ test.describe("Signed-out Clerk authentication", () => {
     await page.goto("/news/trump-iran-proposal", {
       waitUntil: "domcontentloaded",
     });
-    await page.waitForURL(/\/sign-in/, { timeout: 15000 });
-    await expect(page).toHaveURL(/\/sign-in/);
+    await expect(page).toHaveURL(/\/sign-in/, { timeout: 15000 });
   });
 
   test("sign-in page renders Clerk UI", async ({ page }) => {
     await setupClerkTestingToken({ page });
     await page.goto("/sign-in", { waitUntil: "domcontentloaded" });
     await clerk.loaded({ page });
-    await expect(page.locator(".cl-signIn-root")).toBeVisible();
+    await expect(
+      page.locator('[data-clerk-component="SignIn"]'),
+    ).toBeVisible({ timeout: 15000 });
   });
 
   test("sign-up page renders Clerk UI", async ({ page }) => {
     await setupClerkTestingToken({ page });
     await page.goto("/sign-up", { waitUntil: "domcontentloaded" });
     await clerk.loaded({ page });
-    await expect(page.locator(".cl-signUp-root")).toBeVisible();
+    await expect(
+      page.locator('[data-clerk-component="SignUp"]'),
+    ).toBeVisible({ timeout: 15000 });
   });
 });
 
@@ -49,6 +54,16 @@ test.describe("Signed-in Clerk authentication", () => {
       "E2E credentials are not configured",
     );
 
+    const hydrationErrors: string[] = [];
+    page.on("console", (message) => {
+      if (
+        message.type() === "error" &&
+        /hydration|server rendered HTML/i.test(message.text())
+      ) {
+        hydrationErrors.push(message.text());
+      }
+    });
+
     await page.goto("/news/trump-iran-proposal", {
       waitUntil: "domcontentloaded",
     });
@@ -57,5 +72,6 @@ test.describe("Signed-in Clerk authentication", () => {
         name: "Trump Sends Iran Revised Peace Proposal With Tougher Terms: Report",
       }),
     ).toBeVisible();
+    expect(hydrationErrors).toEqual([]);
   });
 });

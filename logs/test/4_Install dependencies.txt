@@ -1,0 +1,20 @@
+﻿2026-11-12T09:47:10.0330591Z ##[group]Run npm ci
+2026-11-12T09:47:10.0330922Z [36;1mnpm ci[0m
+2026-11-12T09:47:10.0357414Z shell: /usr/bin/bash -e {0}
+2026-11-12T09:47:10.0357710Z env:
+2026-11-12T09:47:10.0358113Z   E2E_CLERK_USER_EMAIL: ***
+2026-11-12T09:47:10.0358376Z ##[endgroup]
+2026-11-12T09:47:11.6856012Z npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+2026-11-12T09:47:33.4709003Z npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+2026-11-12T09:48:06.3335767Z 
+2026-11-12T09:48:06.3337046Z added 416 packages, and audited 423 packages in 56s
+2026-11-12T09:48:06.3340239Z 
+2026-11-12T09:48:06.3340705Z 166 packages are looking for funding
+2026-11-12T09:48:06.3341335Z   run `npm fund` for details
+2026-11-12T09:48:06.5137861Z 
+2026-11-12T09:48:06.5138963Z 7 moderate severity vulnerabilities
+2026-11-12T09:48:06.5139477Z 
+2026-11-12T09:48:06.5139802Z To address all issues, run:
+2026-11-12T09:48:06.5140477Z   npm audit fix
+2026-11-12T09:48:06.5140747Z 
+2026-11-12T09:48:06.5141007Z Run `npm audit` for details.

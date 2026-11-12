@@ -150,6 +150,7 @@ test.describe("Visual snapshots", () => {
         fullPage: false,
         maxDiffPixelRatio: 0.02,
         animations: "disabled",
+        caret: "initial",
       });
     });
   }

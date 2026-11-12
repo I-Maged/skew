@@ -1,0 +1,22 @@
+﻿2026-11-12T09:47:04.7751910Z ##[group]Run actions/setup-node@v4
+2026-11-12T09:47:04.7752413Z with:
+2026-11-12T09:47:04.7752790Z   node-version: lts/*
+2026-11-12T09:47:04.7753178Z   always-auth: false
+2026-11-12T09:47:04.7753592Z   check-latest: false
+2026-11-12T09:47:04.7756427Z   token: ***
+2026-11-12T09:47:04.7757128Z env:
+2026-11-12T09:47:04.7757640Z   E2E_CLERK_USER_EMAIL: ***
+2026-11-12T09:47:04.7758050Z ##[endgroup]
+2026-11-12T09:47:04.9201591Z Attempt to resolve LTS alias from manifest...
+2026-11-12T09:47:04.9369136Z (node:2420) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-12T09:47:04.9370698Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-12T09:47:05.9375611Z Attempting to download 26...
+2026-11-12T09:47:05.9383890Z Acquiring 26.13.1 - x64 from https://github.com/actions/node-versions/releases/download/26.13.1-43134154182/node-26.13.1-linux-x64.tar.gz
+2026-11-12T09:47:06.5657949Z Extracting ...
+2026-11-12T09:47:06.5802171Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/3cc57f91-4cb6-45d6-9751-ae429edb307c -f /home/runner/work/_temp/ae17932a-3573-4984-8c0a-f5ee3fc2c56c
+2026-11-12T09:47:07.9119690Z Adding to the cache ...
+2026-11-12T09:47:09.6575591Z ##[group]Environment details
+2026-11-12T09:47:10.0103290Z node: v26.13.1
+2026-11-12T09:47:10.0103697Z npm: 11.20.0
+2026-11-12T09:47:10.0104055Z yarn: 1.22.22
+2026-11-12T09:47:10.0104777Z ##[endgroup]
