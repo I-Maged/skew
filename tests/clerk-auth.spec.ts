@@ -3,7 +3,9 @@ import {
   clerk,
   setupClerkTestingToken,
 } from "@clerk/testing/playwright";
-import { authenticatedStatePath } from "./auth-helpers";
+import { bypassClerkBotProtection } from "./auth-helpers";
+
+const hasCredentials = !!process.env.E2E_CLERK_USER_EMAIL;
 
 test.describe("Signed-out Clerk authentication", () => {
   test.describe.configure({ mode: "serial" });
@@ -42,18 +44,13 @@ test.describe("Signed-out Clerk authentication", () => {
 });
 
 test.describe("Signed-in Clerk authentication", () => {
-  test.use({
-    storageState: process.env.E2E_CLERK_USER_EMAIL
-      ? authenticatedStatePath
-      : undefined,
+  test.skip(!hasCredentials, "E2E credentials are not configured");
+
+  test.beforeEach(async ({ page }) => {
+    await bypassClerkBotProtection(page);
   });
 
   test("signed-in user can open a protected news page", async ({ page }) => {
-    test.skip(
-      !process.env.E2E_CLERK_USER_EMAIL,
-      "E2E credentials are not configured",
-    );
-
     const hydrationErrors: string[] = [];
     page.on("console", (message) => {
       if (

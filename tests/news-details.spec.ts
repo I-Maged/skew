@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { authenticatedStatePath } from "./auth-helpers";
+import { bypassClerkBotProtection } from "./auth-helpers";
 
 const hasCredentials =
   !!process.env.E2E_CLERK_USER_EMAIL;
@@ -7,12 +7,10 @@ const hasCredentials =
 const url = "/news/trump-iran-proposal";
 
 test.describe("News details page", () => {
-  test.use({
-    storageState: hasCredentials ? authenticatedStatePath : undefined,
-  });
+  test.skip(!hasCredentials, "E2E credentials are not configured");
 
-  test.beforeEach(() => {
-    test.skip(!hasCredentials, "E2E credentials are not configured");
+  test.beforeEach(async ({ page }) => {
+    await bypassClerkBotProtection(page);
   });
 
   test("renders article title and core sections", async ({ page }) => {

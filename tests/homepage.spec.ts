@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test.describe("Homepage", () => {
   test("renders Top News with 12 cards", async ({ page }) => {
     const consoleErrors: string[] = [];

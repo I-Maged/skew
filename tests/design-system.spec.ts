@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+test.use({ storageState: { cookies: [], origins: [] } });
+
 type Viewport = { width: number; height: number };
 
 const viewports: Record<string, Viewport> = {
