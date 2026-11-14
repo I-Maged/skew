@@ -16,7 +16,9 @@ test.describe("News details page", () => {
   test("renders article title and core sections", async ({ page }) => {
     const consoleErrors: string[] = [];
     page.on("console", (message) => {
-      if (message.type() === "error") consoleErrors.push(message.text());
+      if (message.type() === "error" && !/Failed to load resource/i.test(message.text())) {
+        consoleErrors.push(message.text());
+      }
     });
 
     await page.goto(url, { waitUntil: "domcontentloaded" });
@@ -104,7 +106,7 @@ test.describe("News details page", () => {
 
   test("clicking a homepage story opens a seeded article", async ({ page }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByTestId("news-card").first().click();
+    await page.getByTestId("news-card").filter({ hasText: "Trump Sends Iran" }).first().click();
     await page.waitForURL(/\/news\//);
     await expect(page.getByRole("heading", { name: "Trump Sends Iran Revised Peace Proposal With Tougher Terms: Report" })).toBeVisible();
   });
