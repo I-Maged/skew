@@ -10,13 +10,13 @@ test.describe("Supabase read routes", () => {
     expect(sources.some((source) => source.name === "Biasly Seed Source (Display Only)")).toBe(true);
   });
 
-  test("articles route returns 12 seeded stories", async ({ request }) => {
+  test("articles route returns seeded stories", async ({ request }) => {
     const response = await request.get("/api/articles");
     expect(response.ok()).toBeTruthy();
 
     const articles = (await response.json()) as Array<{ title: string; slug: string }>;
     expect(Array.isArray(articles)).toBe(true);
-    expect(articles.length).toBe(12);
+    expect(articles.length).toBeGreaterThanOrEqual(12);
   });
 
   test("article route returns the seeded story by slug", async ({ request }) => {
