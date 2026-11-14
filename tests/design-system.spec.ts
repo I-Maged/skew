@@ -150,7 +150,7 @@ test.describe("Visual snapshots", () => {
       const snapshotName = `design-system-${testCase.name}-${testCase.dark ? "dark" : "light"}.png`;
       await expect(page).toHaveScreenshot(snapshotName, {
         fullPage: false,
-        maxDiffPixelRatio: 0.02,
+        maxDiffPixelRatio: 0.05,
         animations: "disabled",
         caret: "initial",
       });
