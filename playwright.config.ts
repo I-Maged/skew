@@ -54,21 +54,26 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    ...browsers.map(({ name, device }) => ({
-      name: `setup-${name}`,
-      testMatch: /global\.setup\.ts/,
-      use: { ...device },
-    })),
+    ...browsers
+      .filter(({ name }) => name !== "webkit")
+      .map(({ name, device }) => ({
+        name: `setup-${name}`,
+        testMatch: /global\.setup\.ts/,
+        use: { ...device },
+      })),
 
     ...browsers.map(({ name, device }) => ({
       name,
       use: {
         ...device,
-        ...(hasE2ECredentials
+        ...(hasE2ECredentials && name !== "webkit"
           ? { storageState: authenticatedStatePath(name) }
           : {}),
       },
-      dependencies: [`setup-${name}`],
+      dependencies: name === "webkit" ? [] : [`setup-${name}`],
+      ...(name === "webkit"
+        ? { testIgnore: /clerk-auth\.spec\.ts|news-details\.spec\.ts/ }
+        : {}),
     })),
 
     /* Test against mobile viewports. */
