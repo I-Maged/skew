@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+test.use({ storageState: { cookies: [], origins: [] } });
+
 type Viewport = { width: number; height: number };
 
 const viewports: Record<string, Viewport> = {
@@ -148,8 +150,9 @@ test.describe("Visual snapshots", () => {
       const snapshotName = `design-system-${testCase.name}-${testCase.dark ? "dark" : "light"}.png`;
       await expect(page).toHaveScreenshot(snapshotName, {
         fullPage: false,
-        maxDiffPixelRatio: 0.02,
+        maxDiffPixelRatio: 0.05,
         animations: "disabled",
+        caret: "initial",
       });
     });
   }

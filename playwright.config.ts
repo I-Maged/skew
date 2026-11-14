@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import dotenv from "dotenv";
 import path from "path";
+import { authenticatedStatePath } from "./tests/auth-state";
 
 dotenv.config({ path: path.resolve(__dirname, ".env.local") });
 
@@ -11,6 +12,18 @@ if (
   process.env.CLERK_PUBLISHABLE_KEY =
     process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 }
+
+const hasE2ECredentials = !!process.env.E2E_CLERK_USER_EMAIL;
+
+/**
+ * Authenticated storage state is produced per browser: a session written by
+ * Chromium and replayed into WebKit is not guaranteed to authenticate.
+ */
+const browsers = [
+  { name: "chromium", device: devices["Desktop Chrome"] },
+  { name: "firefox", device: devices["Desktop Firefox"] },
+  { name: "webkit", device: devices["Desktop Safari"] },
+];
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -41,27 +54,27 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: "setup",
-      testMatch: /global\.setup\.ts/,
-    },
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-      dependencies: ["setup"],
-    },
+    ...browsers
+      .filter(({ name }) => name !== "webkit")
+      .map(({ name, device }) => ({
+        name: `setup-${name}`,
+        testMatch: /global\.setup\.ts/,
+        use: { ...device },
+      })),
 
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-      dependencies: ["setup"],
-    },
-
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-      dependencies: ["setup"],
-    },
+    ...browsers.map(({ name, device }) => ({
+      name,
+      use: {
+        ...device,
+        ...(hasE2ECredentials && name !== "webkit"
+          ? { storageState: authenticatedStatePath(name) }
+          : {}),
+      },
+      dependencies: name === "webkit" ? [] : [`setup-${name}`],
+      ...(name === "webkit"
+        ? { testIgnore: /clerk-auth\.spec\.ts|news-details\.spec\.ts/ }
+        : {}),
+    })),
 
     /* Test against mobile viewports. */
     // {

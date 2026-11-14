@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { Menu } from "lucide-react";
-import { Show, SignInButton, UserButton } from "@clerk/nextjs";
+import { Show, SignInButton } from "@clerk/nextjs";
+import { HomeHeaderUserButton } from "./home-header-user-button";
 
 const navItems = ["Home", "For You", "Local", "Blindspot"];
 
@@ -67,7 +68,7 @@ export function HomeHeader() {
               </SignInButton>
             </Show>
             <Show when="signed-in">
-              <UserButton />
+              <HomeHeaderUserButton />
             </Show>
           </Suspense>
         </div>

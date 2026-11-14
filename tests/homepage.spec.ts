@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test.describe("Homepage", () => {
   test("renders Top News with 12 cards", async ({ page }) => {
     const consoleErrors: string[] = [];
@@ -49,6 +51,7 @@ test.describe("Theme toggle", () => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.addInitScript(() => localStorage.removeItem("biasly-theme"));
     await page.goto("/", { waitUntil: "domcontentloaded" });
+  await page.waitForLoadState("networkidle");
 
     await page.getByRole("button", { name: "Dark" }).click();
     await expect.poll(() =>
