@@ -105,7 +105,8 @@ function mapHomepageArticle(row: ArticleRelationRow): HomepageArticle {
 export async function listHomepageArticles(options?: {
   limit?: number;
 }): Promise<HomepageArticle[]> {
-  const client = createSupabaseServerClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = createSupabaseServerClient() as any;
   const limit = Math.min(Math.max(options?.limit ?? 24, 1), 100);
 
   const { data, error } = await client
@@ -140,12 +141,175 @@ export function toHomeStory(article: HomepageArticle): HomeStory {
   };
 }
 
+export interface PendingAnalysisArticle {
+  id: string;
+  title: string;
+  rawText: string;
+}
+
+export async function listPendingAnalysisArticles(): Promise<PendingAnalysisArticle[]> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = createSupabaseServerClient() as any;
+  const ids = await (async () => {
+    const { data, error } = await client
+      .from("articles")
+      .select("id, title, raw_text, article_analyses(article_id)");
+    if (error) throw new Error(`Failed to load articles: ${error.message}`);
+    const pending: { id: string; title: string; raw_text: string | null }[] = [];
+    for (const row of data ?? []) {
+      const r = row as {
+        id: string;
+        title: string;
+        raw_text: string | null;
+        article_analyses?: unknown;
+      };
+      const analyses = r.article_analyses;
+      const hasAnalysis = Array.isArray(analyses)
+        ? analyses.length > 0
+        : Boolean(analyses);
+      if (!hasAnalysis) pending.push({ id: r.id, title: r.title, raw_text: r.raw_text });
+    }
+    return pending;
+  })();
+
+  return ids.map((r) => ({
+    id: r.id,
+    title: r.title,
+    rawText: r.raw_text ?? "",
+  }));
+}
+
+export async function hasAnalysisEmbedding(articleId: string): Promise<boolean> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = createSupabaseServerClient() as any;
+  const { data, error } = await client
+    .from("article_analyses")
+    .select("embedding")
+    .eq("article_id", articleId)
+    .maybeSingle();
+  if (error) throw new Error(`Failed to check embedding: ${error.message}`);
+  const row = data as { embedding: unknown } | null;
+  return Boolean(row && row.embedding);
+}
+
+export async function getAnalysisByArticleId(articleId: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = createSupabaseServerClient() as any;
+  const { data, error } = await client
+    .from("article_analyses")
+    .select("*")
+    .eq("article_id", articleId)
+    .maybeSingle();
+  if (error) throw new Error(`Failed to load analysis: ${error.message}`);
+  return data as (import("../types").Database["public"]["Tables"]["article_analyses"]["Row"]) | null;
+}
+
+export async function upsertAnalysis(input: {
+  articleId: string;
+  summary: string;
+  sentimentScore: number;
+  sentimentLabel: "positive" | "neutral" | "negative";
+  biasScore: number;
+  biasLabel: "left" | "center" | "right" | "mixed" | "unclear";
+  leftPercentage: number;
+  centerPercentage: number;
+  rightPercentage: number;
+  confidence: number;
+  framingNotes: string[];
+  loadedTerms: string[];
+  disclaimer: string;
+  model: string;
+  embedding?: number[] | null;
+}) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = createSupabaseServerClient() as any;
+  const payload: Record<string, unknown> = {
+    article_id: input.articleId,
+    summary: input.summary,
+    sentiment_score: input.sentimentScore,
+    sentiment_label: input.sentimentLabel,
+    bias_score: input.biasScore,
+    bias_label: input.biasLabel,
+    left_percentage: input.leftPercentage,
+    center_percentage: input.centerPercentage,
+    right_percentage: input.rightPercentage,
+    confidence: input.confidence,
+    framing_notes: input.framingNotes,
+    loaded_terms: input.loadedTerms,
+    disclaimer: input.disclaimer,
+    model: input.model,
+    updated_at: new Date().toISOString(),
+  };
+  if (input.embedding) payload.embedding = input.embedding;
+
+  const { error } = await client
+    .from("article_analyses")
+    .upsert(payload, { onConflict: "article_id" });
+  if (error) throw new Error(`Failed to upsert analysis: ${error.message}`);
+}
+
+export async function setAnalyzedAt(articleId: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = createSupabaseServerClient() as any;
+  const { error } = await client
+    .from("articles")
+    .update({ analyzed_at: new Date().toISOString() })
+    .eq("id", articleId);
+  if (error) throw new Error(`Failed to set analyzed_at: ${error.message}`);
+}
+
+export interface RelatedArticle {
+  id: string;
+  slug: string;
+  title: string;
+  imageUrl: string;
+  sourceName: string;
+  publishedAt: string;
+}
+
+export async function getRelatedArticles(
+  articleId: string,
+  embedding: number[],
+): Promise<RelatedArticle[]> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = createSupabaseServerClient() as any;
+  const { data, error } = await client.rpc("match_related_articles", {
+    query_embedding: embedding,
+    match_count: 5,
+    exclude_id: articleId,
+  });
+  if (error) throw new Error(`Failed to load related articles: ${error.message}`);
+
+  const rows = (data ?? []) as Array<{
+    id: string;
+    slug: string | null;
+    title: string;
+    image_url: string;
+    source_name: string;
+    published_at: string;
+  }>;
+
+  return rows.map((r) => ({
+    id: r.id,
+    slug: r.slug && r.slug.trim() ? r.slug : r.id,
+    title: r.title,
+    imageUrl: r.image_url,
+    sourceName: r.source_name,
+    publishedAt: new Date(r.published_at).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }),
+  }));
+}
+
 export async function getArticleBySlug(slug: string): Promise<ArticleDetail | null> {
   if (!slug) {
     return null;
   }
 
-  const client = createSupabaseServerClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = createSupabaseServerClient() as any;
 
   let data: ArticleRelationRow | null = null;
   let error: { message: string } | null = null;

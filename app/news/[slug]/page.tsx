@@ -13,7 +13,7 @@ import { AiSummaryCard } from "@/components/news-details/ai-summary-card";
 import { SourceBreakdownCard } from "@/components/news-details/source-breakdown-card";
 import { RelatedStoryCard, type RelatedStory } from "@/components/news-details/related-story-card";
 import { NewsletterSignup } from "@/components/news-details/newsletter-signup";
-import { getArticleBySlug } from "@/lib/supabase/queries/articles";
+import { getArticleBySlug, getAnalysisByArticleId, getRelatedArticles } from "@/lib/supabase/queries/articles";
 
 const relatedStories: RelatedStory[] = [
   {
@@ -92,6 +92,16 @@ async function ProtectedNewsDetails({
     notFound();
   }
 
+  let relatedArticles: Awaited<ReturnType<typeof getRelatedArticles>> = [];
+  try {
+    const analysis = await getAnalysisByArticleId(detail.id);
+    if (analysis?.embedding) {
+      relatedArticles = await getRelatedArticles(detail.id, analysis.embedding as number[]);
+    }
+  } catch {
+    relatedArticles = [];
+  }
+
   return (
     <div className="min-h-screen bg-[#f2f3f0] dark:bg-[#0a0a0f]">
       <HomeUtilityBar />
@@ -129,6 +139,30 @@ async function ProtectedNewsDetails({
                   ))}
                 </div>
               </div>
+
+              {relatedArticles.length > 0 && (
+                <div className="mt-6 border-t border-[#d2d3cf] pt-4">
+                  <h2 className="mb-3 text-[16px] font-bold text-[#111111] dark:text-[#f5f5f5]">
+                    Related Articles
+                  </h2>
+                  <div className="grid grid-cols-1 gap-[14px_18px] md:grid-cols-2">
+                    {relatedArticles.map((ra) => (
+                      <a
+                        key={ra.id}
+                        href={`/news/${ra.slug}`}
+                        className="block rounded-lg border border-[#d2d3cf] bg-white p-3 hover:bg-[#f7f7f5] dark:bg-[#14141a]"
+                      >
+                        <div className="text-[14px] font-semibold text-[#111111] dark:text-[#f5f5f5]">
+                          {ra.title}
+                        </div>
+                        <div className="mt-1 text-[12px] text-[#555]">
+                          {ra.sourceName} · {ra.publishedAt}
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </article>
 
             <aside data-testid="sidebar" className="min-w-0">
