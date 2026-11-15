@@ -2,6 +2,7 @@
 -- Run this file in Supabase Dashboard -> SQL Editor before testing.
 
 create extension if not exists "pgcrypto";
+create extension if not exists "vector";
 
 create table if not exists public.sources (
   id uuid primary key default gen_random_uuid(),
@@ -48,6 +49,7 @@ create table if not exists public.article_analyses (
   loaded_terms text[] not null default '{}',
   disclaimer text,
   model text,
+  embedding vector(1536),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -84,6 +86,7 @@ create index if not exists articles_published_at_idx on public.articles(publishe
 create index if not exists articles_url_idx on public.articles(url);
 create unique index if not exists articles_slug_key on public.articles(slug);
 create index if not exists article_analyses_article_id_idx on public.article_analyses(article_id);
+create index if not exists article_analyses_embedding_idx on public.article_analyses using ivfflat (embedding vector_cosine_ops) with (lists = 100);
 create index if not exists oxylabs_schedules_source_id_idx on public.oxylabs_schedules(source_id);
 create index if not exists oxylabs_schedule_runs_schedule_id_idx on public.oxylabs_schedule_runs(schedule_id);
 

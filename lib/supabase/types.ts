@@ -82,6 +82,7 @@ export interface Database {
           loaded_terms: string[];
           disclaimer: string | null;
           model: string | null;
+          embedding: number[] | null;
           created_at: string;
           updated_at: string;
         };
@@ -101,6 +102,7 @@ export interface Database {
           loaded_terms?: string[];
           disclaimer?: string | null;
           model?: string | null;
+          embedding?: number[] | null;
           created_at?: string;
           updated_at?: string;
         };
